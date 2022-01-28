@@ -1,4 +1,4 @@
-#include "./include/terminal.h"
+#include "../include/terminal.h"
 #include <stdio.h>
 #include <stdint.h>
 
