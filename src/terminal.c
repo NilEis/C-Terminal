@@ -38,7 +38,7 @@ void terminal_set_color(int f, int b)
  */
 void terminal_reset_color(void)
 {
-    printf("\x1b[0;37m");
+    terminal_set_color(LIGHT_WHITE, BLACK);
 }
 
 int terminal_get_width(void)
