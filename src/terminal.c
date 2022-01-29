@@ -20,7 +20,7 @@ void terminal_clear(void)
 }
 /**
  * @brief Sets the color of the console
- * 
+ *
  * @param f Foreground
  * @param b Background
  * @return (void)
@@ -101,7 +101,7 @@ int terminal_kbhit(void)
 }
 
 #elif defined(_WIN32) || defined(_WIN64)
- 
+
 #include <stdint.h>
 #include <windows.h>
 #include <conio.h>
@@ -111,13 +111,13 @@ CONSOLE_SCREEN_BUFFER_INFO csbi;
 
 /**
  * @brief generates a color from a given foreground and background color
- * 
+ *
  */
 #define COL(f, b) ((uint8_t)((b << 4) | f))
 
 /**
  * @brief generates a color from r,g and b
- * 
+ *
  * @param r activate the red bit
  * @param g activate the green bit
  * @param b activate the blue bit
@@ -147,7 +147,7 @@ void terminal_set_color(int f, int b)
 void terminal_reset_color(void)
 {
     console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(console_handle, 0b00001111);
+    SetConsoleTextAttribute(console_handle, COL(LIGHT_WHITE, BLACK));
 }
 
 /**
