@@ -101,7 +101,7 @@ int terminal_kbhit(void)
 }
 
 #elif defined(_WIN32) || defined(_WIN64)
-
+ 
 #include <stdint.h>
 #include <windows.h>
 #include <conio.h>
