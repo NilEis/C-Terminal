@@ -4,3 +4,4 @@ CMakeCache.txt
 *.cmake
 CMakeFiles/
 Makefile
+*.a
