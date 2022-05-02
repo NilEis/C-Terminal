@@ -100,6 +100,44 @@ int terminal_kbhit(void)
     return bytes > 0;
 }
 
+size_t terminal_safe_gets(char *buffer, size_t size)
+{
+    size_t count = 0;
+    char ch = '\0';
+    struct termios term, term_old;
+    tcgetattr(0, &term_old);
+    tcgetattr(0, &term);
+    term.c_lflag &= ~ICANON;
+    term.c_lflag &= ~ECHO;
+    tcsetattr(0, TCSANOW, &term);
+    setbuf(stdin, NULL);
+    while (size)
+    {
+        ch = getch();
+        switch (ch)
+        {
+        case 0x1B:
+            break;
+        case '\0':
+        case '\n':
+            size = 0;
+            break;
+        case '\b':
+            buffer[count] = '\0';
+            size++;
+            count--;
+            count = count < 0 ? 0 : count;
+            break;
+        default:
+            buffer[count] = ch;
+            count++;
+            size--;
+        }
+    }
+    tcsetattr(0, TCSANOW, &term_old);
+    return count;
+}
+
 #elif defined(_WIN32) || defined(_WIN64)
 
 #include <stdint.h>
@@ -222,6 +260,36 @@ int terminal_getch(void)
 int terminal_kbhit(void)
 {
     return kbhit();
+}
+
+size_t terminal_safe_gets(char *buffer, size_t size)
+{
+    size_t count = 0;
+    char ch = '\0';
+    while (size)
+    {
+        ch = _getch();
+        switch (ch)
+        {
+        case 0xE0:
+            break;
+        case '\0':
+        case '\n':
+            size = 0;
+            break;
+        case '\b':
+            buffer[count] = '\0';
+            size++;
+            count--;
+            count = count < 0 ? 0 : count;
+            break;
+        default:
+            buffer[count] = ch;
+            count++;
+            size--;
+        }
+    }
+    return count;
 }
 
 #endif

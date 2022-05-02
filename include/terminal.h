@@ -53,6 +53,12 @@ int terminal_getch(void);
 
 int terminal_kbhit(void);
 
+/**
+ * @brief writes the input to the buffer
+ * @return (size_t) the number of the bytes read
+ */
+size_t terminal_safe_gets(char *buffer, size_t size);
+
 #if defined(_WIN32) || defined(_WIN64)
 
 enum color
