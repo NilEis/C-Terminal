@@ -267,7 +267,7 @@ size_t terminal_safe_gets(char *buffer, size_t size)
 {
     size_t count = 0;
     char ch = '\0';
-    while (size - 1)
+    while (size - 1 <= 0)
     {
         ch = _getch();
         switch (ch)
