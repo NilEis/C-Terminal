@@ -111,7 +111,7 @@ size_t terminal_safe_gets(char *buffer, size_t size)
     term.c_lflag &= ~ECHO;
     tcsetattr(0, TCSANOW, &term);
     setbuf(stdin, NULL);
-    while (size)
+    while (size - 1)
     {
         ch = getch();
         switch (ch)
@@ -266,7 +266,7 @@ size_t terminal_safe_gets(char *buffer, size_t size)
 {
     size_t count = 0;
     char ch = '\0';
-    while (size)
+    while (size - 1)
     {
         ch = _getch();
         switch (ch)
