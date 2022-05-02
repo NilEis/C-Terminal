@@ -1,6 +1,5 @@
 #include "../include/terminal.h"
 #include <stdio.h>
-#include <stddef.h>
 #include <stdint.h>
 
 #ifdef __unix__

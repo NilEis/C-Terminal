@@ -1,6 +1,8 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
 
+#include <stddef.h>
+
 void terminal_clear(void);
 /**
  * @brief sets the color of the console
