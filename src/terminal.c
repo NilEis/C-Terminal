@@ -134,6 +134,7 @@ size_t terminal_safe_gets(char *buffer, size_t size)
             size--;
         }
     }
+    buffer[count] = '\0';
     tcsetattr(0, TCSANOW, &term_old);
     return count;
 }
@@ -289,6 +290,7 @@ size_t terminal_safe_gets(char *buffer, size_t size)
             size--;
         }
     }
+    buffer[count] = '\0';
     return count;
 }
 
