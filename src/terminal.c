@@ -113,7 +113,7 @@ size_t terminal_safe_gets(char *buffer, size_t size)
     setbuf(stdin, NULL);
     while (size - 1)
     {
-        ch = getch();
+        ch = getchar();
         switch (ch)
         {
         case 0x1B:
