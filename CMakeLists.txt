@@ -11,5 +11,4 @@ option(BUILD_SHARED_LIBS "Build a shared libary" FALSE)
 
 add_library(c_terminal ${SOURCE_FILES_LIST})
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+target_include_directories(c_terminal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
