@@ -267,24 +267,27 @@ size_t terminal_safe_gets(char *buffer, size_t size)
 {
     size_t count = 0;
     char ch = '\0';
-    while (size - 1 <= 0)
+    while (size - 1 != 0)
     {
-        ch = _getch();
+        ch = terminal_getch();
         switch (ch)
         {
         case 0xE0:
             break;
         case '\0':
         case '\n':
+        case 13:
             size = 0;
             break;
         case '\b':
+            printf("%c \b", ch);
             buffer[count] = '\0';
             size++;
             count--;
             count = count < 0 ? 0 : count;
             break;
         default:
+            printf("%c", ch);
             buffer[count] = ch;
             count++;
             size--;
