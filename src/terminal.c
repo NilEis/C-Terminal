@@ -277,7 +277,7 @@ size_t terminal_safe_gets(char *buffer, size_t size)
         case '\0':
         case '\n':
         case 13:
-            printf("%c", ch);
+            printf("\n");
             size = 1;
             break;
         case '\b':
