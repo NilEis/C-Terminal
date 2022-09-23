@@ -120,7 +120,7 @@ size_t terminal_safe_gets(char *buffer, size_t size)
             break;
         case '\0':
         case '\n':
-            size = 0;
+            size = 1;
             break;
         case '\b':
             buffer[count] = '\0';
@@ -267,7 +267,7 @@ size_t terminal_safe_gets(char *buffer, size_t size)
 {
     size_t count = 0;
     char ch = '\0';
-    while (size - 1 != 0)
+    while (size - 1)
     {
         ch = terminal_getch();
         switch (ch)

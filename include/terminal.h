@@ -44,12 +44,14 @@ void terminal_sleep(int ms);
 
 /**
  * @brief Reads a char from stdin without waiting for '\n'
+ * @deprecated
  * @return (int)
  */
 int terminal_getch(void);
 
 /**
  * @brief returns 1 if a key was pressed.
+ * @deprecated
  * @return (int)
  */
 
@@ -57,6 +59,7 @@ int terminal_kbhit(void);
 
 /**
  * @brief writes the input to the buffer
+ * @deprecated
  * @return (size_t) the number of the bytes read
  */
 size_t terminal_safe_gets(char *buffer, size_t size);
