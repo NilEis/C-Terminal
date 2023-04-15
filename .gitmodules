@@ -1,0 +1,3 @@
+[submodule "subprojects/clib"]
+	path = subprojects/clib
+	url = git@github.com:NilEis/clib.git
