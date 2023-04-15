@@ -1,6 +1,7 @@
 #include "../include/terminal.h"
 #include <stdio.h>
 #include <stdint.h>
+#include "constructor.h"
 
 #ifdef __unix__
 #include <sys/ioctl.h>
@@ -100,53 +101,66 @@ int terminal_kbhit(void)
     return bytes > 0;
 }
 
-size_t terminal_safe_gets(char *buffer, size_t size)
+#elif defined(_WIN32) || defined(_WIN64)
+
+HANDLE console_handle;
+CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+#ifdef USE_ANSI
+#define ESC "\x1b"
+#define CSI "\x1b["
+#include <stdint.h>
+#include <windows.h>
+
+INITIALIZER(EnableVTMode)
 {
-    size_t count = 0;
-    char ch = '\0';
-    struct termios term, term_old;
-    tcgetattr(0, &term_old);
-    tcgetattr(0, &term);
-    term.c_lflag &= ~ICANON;
-    term.c_lflag &= ~ECHO;
-    tcsetattr(0, TCSANOW, &term);
-    setbuf(stdin, NULL);
-    while (size - 1)
+    // Set output mode to handle virtual terminal sequences
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE)
     {
-        ch = getchar();
-        switch (ch)
-        {
-        case 0x1B:
-            break;
-        case '\0':
-        case '\n':
-            size = 1;
-            break;
-        case '\b':
-            buffer[count] = '\0';
-            size++;
-            count--;
-            count = count < 0 ? 0 : count;
-            break;
-        default:
-            buffer[count] = ch;
-            count++;
-            size--;
-        }
+        exit(1);
     }
-    buffer[count] = '\0';
-    tcsetattr(0, TCSANOW, &term_old);
-    return count;
+
+    DWORD dwMode = 0;
+    if (!GetConsoleMode(hOut, &dwMode))
+    {
+        exit(1);
+    }
+
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_VIRTUAL_TERMINAL_INPUT;
+    if (!SetConsoleMode(hOut, dwMode))
+    {
+        exit(1);
+    }
 }
 
-#elif defined(_WIN32) || defined(_WIN64)
+void terminal_clear(void)
+{
+    printf(CSI "2J");
+}
+
+void terminal_set_color(int f, int b)
+{
+    int foreground = f;
+    int background = b + 10;
+    printf(CSI "%d;%dm", background, foreground);
+}
+
+void terminal_reset_color(void)
+{
+    printf(CSI "0m");
+}
+
+void terminal_set_cursor_pos(int x, int y)
+{
+    printf(CSI "%d;%dH", y, x);
+}
+
+#else
 
 #include <stdint.h>
 #include <windows.h>
 #include <conio.h>
-
-HANDLE console_handle;
-CONSOLE_SCREEN_BUFFER_INFO csbi;
 
 /**
  * @brief generates a color from a given foreground and background color
@@ -228,6 +242,16 @@ void terminal_clear(void)
     SetConsoleCursorPosition(console_handle, start_coords);
 }
 
+void terminal_set_cursor_pos(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+#endif
+
 int terminal_get_width(void)
 {
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
@@ -238,14 +262,6 @@ int terminal_get_height(void)
 {
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     return csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-}
-
-void terminal_set_cursor_pos(int x, int y)
-{
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
 void terminal_sleep(int ms)
@@ -265,37 +281,7 @@ int terminal_kbhit(void)
 
 size_t terminal_safe_gets(char *buffer, size_t size)
 {
-    size_t count = 0;
-    char ch = '\0';
-    while (size - 1)
-    {
-        ch = terminal_getch();
-        switch (ch)
-        {
-        case 0xE0:
-            break;
-        case '\0':
-        case '\n':
-        case 13:
-            printf("\n");
-            size = 1;
-            break;
-        case '\b':
-            printf("%c \b", ch);
-            buffer[count] = '\0';
-            size++;
-            count--;
-            count = count < 0 ? 0 : count;
-            break;
-        default:
-            printf("%c", ch);
-            buffer[count] = ch;
-            count++;
-            size--;
-        }
-    }
-    buffer[count] = '\0';
-    return count;
+    
 }
 
 #endif

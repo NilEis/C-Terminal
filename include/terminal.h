@@ -37,7 +37,7 @@ int terminal_get_height(void);
 void terminal_set_cursor_pos(int x, int y);
 
 /**
- * @brief pauses the current thread for ms milliseconds 
+ * @brief pauses the current thread for ms milliseconds
  * @return (void)
  */
 void terminal_sleep(int ms);
@@ -64,7 +64,7 @@ int terminal_kbhit(void);
  */
 size_t terminal_safe_gets(char *buffer, size_t size);
 
-#if defined(_WIN32) || defined(_WIN64)
+#if (defined(_WIN32) || defined(_WIN64)) && !USE_ANSI
 
 enum color
 {
@@ -86,7 +86,7 @@ enum color
     LIGHT_WHITE = 0b1111    //0x0F
 };
 
-#elif defined(__unix__)
+#elif defined(__unix__) || USE_ANSI
 
 enum color
 {

@@ -12,4 +12,10 @@ if (NOT TARGET c_terminal)
     add_library(c_terminal ${SOURCE_FILES_LIST})
 endif()
 
+option(ENABLE_ANSI_SUPPORT "Enables windows ansi support" TRUE)
+
+if(ENABLE_ANSI_SUPPORT)
+    target_compile_definitions(c_terminal PRIVATE USE_ANSI)
+endif()
+
 target_include_directories(c_terminal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
