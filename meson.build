@@ -1,3 +1,9 @@
+project('c_terminal', 'c')
+
 incdir_terminal = include_directories('include')
 
-c_terminal_lib = library('c_terminal', 'src/terminal.c', include_directories: incdir_terminal)
+if get_option('enableAnsiSupport')
+    add_project_arguments('-DUSE_ANSI', language : 'c')
+endif
+
+c_terminal = library('c_terminal', 'src/terminal.c', include_directories: incdir_terminal)

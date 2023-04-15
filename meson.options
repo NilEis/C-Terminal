@@ -1,0 +1,1 @@
+option('enableAnsiSupport', type : 'boolean', value : true, description : 'Enables windows ansi support')
