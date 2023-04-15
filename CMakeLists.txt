@@ -8,6 +8,8 @@ project(
 
 set(SOURCE_FILES_LIST src/terminal.c)
 
-add_library(c_terminal ${SOURCE_FILES_LIST})
+if (NOT TARGET c_terminal)
+    add_library(c_terminal ${SOURCE_FILES_LIST})
+endif()
 
 target_include_directories(c_terminal PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
