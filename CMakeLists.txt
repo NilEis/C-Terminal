@@ -7,7 +7,6 @@ project(
     )
 
 set(SOURCE_FILES_LIST src/terminal.c)
-option(BUILD_SHARED_LIBS "Build a shared libary" FALSE)
 
 add_library(c_terminal ${SOURCE_FILES_LIST})
 
