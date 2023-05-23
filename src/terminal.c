@@ -103,6 +103,8 @@ int terminal_kbhit(void)
 
 #elif defined(_WIN32) || defined(_WIN64)
 
+#include <windows.h>
+#include <conio.h>
 HANDLE console_handle;
 CONSOLE_SCREEN_BUFFER_INFO csbi;
 
@@ -110,7 +112,6 @@ CONSOLE_SCREEN_BUFFER_INFO csbi;
 #define ESC "\x1b"
 #define CSI "\x1b["
 #include <stdint.h>
-#include <windows.h>
 
 INITIALIZER(EnableVTMode)
 {
@@ -159,8 +160,6 @@ void terminal_set_cursor_pos(int x, int y)
 #else
 
 #include <stdint.h>
-#include <windows.h>
-#include <conio.h>
 
 /**
  * @brief generates a color from a given foreground and background color

@@ -1,6 +1,10 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stddef.h>
 
 void terminal_clear(void);
@@ -110,6 +114,10 @@ enum color
 
 #define RESET "\x1b[0m"
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif // TERMINAL_H
