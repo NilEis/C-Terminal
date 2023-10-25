@@ -9,7 +9,11 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/select.h>
-//#include <stropts.h>
+// #include <stropts.h>
+
+void terminal_init(void)
+{
+}
 
 /**
  * @brief Clears the console
@@ -113,6 +117,7 @@ CONSOLE_SCREEN_BUFFER_INFO csbi;
 #define CSI "\x1b["
 #include <stdint.h>
 
+#ifdef USE_ANSI_CONSTRUCTOR
 INITIALIZER(EnableVTMode)
 {
     // Set output mode to handle virtual terminal sequences
@@ -132,6 +137,33 @@ INITIALIZER(EnableVTMode)
     if (!SetConsoleMode(hOut, dwMode))
     {
         exit(1);
+    }
+}
+
+#endif
+
+void terminal_init(void)
+{
+    // Set output mode to handle virtual terminal sequences
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE)
+    {
+        printf("Could not get handle -> Colors might not work\n");
+        return;
+    }
+
+    DWORD dwMode = 0;
+    if (!GetConsoleMode(hOut, &dwMode))
+    {
+        printf("Could not get mode -> Colors might not work\n");
+        return;
+    }
+
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_VIRTUAL_TERMINAL_INPUT;
+    if (!SetConsoleMode(hOut, dwMode))
+    {
+        printf("Could not set mode -> Colors might not work\n");
+        return;
     }
 }
 
@@ -166,6 +198,10 @@ void terminal_set_cursor_pos(int x, int y)
  *
  */
 #define COL(f, b) ((uint8_t)((b << 4) | f))
+
+void terminal_init(void)
+{
+}
 
 /**
  * @brief generates a color from r,g and b
@@ -280,7 +316,6 @@ int terminal_kbhit(void)
 
 size_t terminal_safe_gets(char *buffer, size_t size)
 {
-    
 }
 
 #endif

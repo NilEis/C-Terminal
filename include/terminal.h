@@ -7,6 +7,12 @@ extern "C" {
 
 #include <stddef.h>
 
+/**
+ * @brief initilizes the color support
+ * 
+ */
+void terminal_init(void);
+
 void terminal_clear(void);
 /**
  * @brief sets the color of the console
