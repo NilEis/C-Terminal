@@ -150,7 +150,7 @@ INITIALIZER(EnableVTMode)
         exit(1);
     }
 
-    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_VIRTUAL_TERMINAL_INPUT;
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
     if (!SetConsoleMode(hOut, dwMode))
     {
         exit(1);
