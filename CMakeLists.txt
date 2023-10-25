@@ -15,10 +15,11 @@ endif()
 option(ENABLE_ANSI_SUPPORT "Enables windows ansi support" TRUE)
 
 if(ENABLE_ANSI_SUPPORT)
+    message(STATUS "Use ANSI coloring")
     option(ENABLE_ANSI_CONSTRUCTOR "Enables windows ansi support with a constructor" TRUE)
-    target_compile_definitions(c_terminal PRIVATE USE_ANSI)
+    target_compile_definitions(c_terminal PUBLIC C_TERMINAL_USE_ANSI=1)
     if(ENABLE_ANSI_CONSTRUCTOR)
-        target_compile_definitions(c_terminal PRIVATE USE_ANSI_CONSTRUCTOR USE_ANSI)
+        target_compile_definitions(c_terminal PUBLIC C_TERMINAL_USE_ANSI_CONSTRUCTOR=1 C_TERMINAL_USE_ANSI=1)
     endif()
 endif()
 

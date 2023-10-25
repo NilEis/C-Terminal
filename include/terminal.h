@@ -74,7 +74,7 @@ int terminal_kbhit(void);
  */
 size_t terminal_safe_gets(char *buffer, size_t size);
 
-#if (defined(_WIN32) || defined(_WIN64)) && !defined(USE_ANSI)
+#if (defined(_WIN32) || defined(_WIN64)) && !C_TERMINAL_USE_ANSI
 
 enum color
 {
@@ -96,7 +96,7 @@ enum color
     LIGHT_WHITE = 0b1111    //0x0F
 };
 
-#elif defined(__unix__) || defined(USE_ANSI)
+#elif defined(__unix__) || defined(C_TERMINAL_USE_ANSI)
 
 enum color
 {

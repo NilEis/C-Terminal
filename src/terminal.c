@@ -129,12 +129,12 @@ LPVOID get_last_windows_error(void)
     return lpMsgBuf;
 }
 
-#ifdef USE_ANSI
+#ifdef C_TERMINAL_USE_ANSI
 #define ESC "\x1b"
 #define CSI "\x1b["
 #include <stdint.h>
 
-#ifdef USE_ANSI_CONSTRUCTOR
+#ifdef C_TERMINAL_USE_ANSI_CONSTRUCTOR
 INITIALIZER(EnableVTMode)
 {
     // Set output mode to handle virtual terminal sequences
