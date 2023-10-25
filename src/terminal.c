@@ -193,7 +193,8 @@ void terminal_set_color(int f, int b)
 {
     int foreground = f;
     int background = b + 10;
-    printf(CSI "%d;%dm", background, foreground);
+    printf(CSI "%dm", background);
+    printf(CSI "%dm", foreground);
 }
 
 void terminal_reset_color(void)
