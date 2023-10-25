@@ -176,7 +176,7 @@ void terminal_init(void)
         return;
     }
 
-    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_VIRTUAL_TERMINAL_INPUT;
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
     if (!SetConsoleMode(hOut, dwMode))
     {
         wprintf(L"%s\n", get_last_windows_error());
