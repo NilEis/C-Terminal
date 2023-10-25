@@ -112,6 +112,23 @@ int terminal_kbhit(void)
 HANDLE console_handle;
 CONSOLE_SCREEN_BUFFER_INFO csbi;
 
+LPVOID get_last_windows_error(void)
+{
+    LPVOID lpMsgBuf;
+    DWORD dw = GetLastError();
+
+    FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER |
+            FORMAT_MESSAGE_FROM_SYSTEM |
+            FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        dw,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPTSTR)&lpMsgBuf,
+        0, NULL);
+    return lpMsgBuf;
+}
+
 #ifdef USE_ANSI
 #define ESC "\x1b"
 #define CSI "\x1b["
@@ -148,21 +165,21 @@ void terminal_init(void)
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     if (hOut == INVALID_HANDLE_VALUE)
     {
-        printf("Could not get handle -> Colors might not work\n");
+        wprintf(L"%s\n", get_last_windows_error());
         return;
     }
 
     DWORD dwMode = 0;
     if (!GetConsoleMode(hOut, &dwMode))
     {
-        printf("Could not get mode -> Colors might not work\n");
+        wprintf(L"%s\n", get_last_windows_error());
         return;
     }
 
     dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | ENABLE_VIRTUAL_TERMINAL_INPUT;
     if (!SetConsoleMode(hOut, dwMode))
     {
-        printf("Could not set mode -> Colors might not work\n");
+        wprintf(L"%s\n", get_last_windows_error());
         return;
     }
 }
