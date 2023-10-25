@@ -18,7 +18,7 @@ if(ENABLE_ANSI_SUPPORT)
     option(ENABLE_ANSI_CONSTRUCTOR "Enables windows ansi support with a constructor" TRUE)
     target_compile_definitions(c_terminal PRIVATE USE_ANSI)
     if(ENABLE_ANSI_CONSTRUCTOR)
-        target_compile_definitions(c_terminal PRIVATE USE_ANSI_CONSTRUCTOR)
+        target_compile_definitions(c_terminal PRIVATE USE_ANSI_CONSTRUCTOR USE_ANSI)
     endif()
 endif()
 
